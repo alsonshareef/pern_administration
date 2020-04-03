@@ -9,11 +9,10 @@ const homepageRoute = require('./routes/homepage');
 
 const app = express();
 
-app.use('/api/v1/home', homepageRoute);
+app.use('/api/home', homepageRoute);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('../client/build'));
-
   app.get('*', (req, res) =>
     res.sendFile(path.resolve('../client/build', 'index.html'))
   );
