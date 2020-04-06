@@ -1,4 +1,7 @@
 ** TODO LIST **
 
 
-- Configure PostgreSQL database to be able to satisfy all functionality desired in criteria.
+* Configure PostgreSQL database to be able to satisfy all functionality desired in criteria.
+  -- Follow tutorial to figure out how to build up the database and tables to fulfil the assessment requirements.
+  -- Currently it seems that 2 seperate tables are required for storing both teacher and student data. Try to figure out how to represent
+     the links between teachers and the students that are registered under them with the tables.
