@@ -5,3 +5,4 @@
   -- Follow tutorial to figure out how to build up the database and tables to fulfil the assessment requirements.
   -- Currently it seems that 2 seperate tables are required for storing both teacher and student data. Try to figure out how to represent
      the links between teachers and the students that are registered under them with the tables.
+  -- ** WATCH FOREIGN KEYS/RELATIONSHIPS BETWEEN TABLES from PostgreSQL tutorial.
