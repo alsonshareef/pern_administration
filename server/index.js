@@ -6,6 +6,7 @@ const colors = require('colors');
 dotenv.config({ path: '../config/config.env' });
 
 const homepageRoute = require('./routes/homepage');
+const studentsRoute = require('./routes/students');
 
 const app = express();
 
@@ -13,7 +14,8 @@ const app = express();
 app.use(express.json());
 
 // ROUTES
-app.use('/api/home', homepageRoute);
+app.use('/api', homepageRoute);
+app.use('/api/students', studentsRoute);
 
 // PRODUCTION SETUP
 if (process.env.NODE_ENV === 'production') {
