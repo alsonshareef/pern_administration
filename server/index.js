@@ -9,8 +9,13 @@ const homepageRoute = require('./routes/homepage');
 
 const app = express();
 
+// MIDDLEWARE
+app.use(express.json());
+
+// ROUTES
 app.use('/api/home', homepageRoute);
 
+// PRODUCTION SETUP
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('../client/build'));
   app.get('*', (req, res) =>
