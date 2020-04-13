@@ -6,8 +6,6 @@ This is a fullstack web-application that provides a solution for teachers to car
 
 ## Motivation
 
-A short description of the motivation behind the creation and maintenance of the project. This should explain **why** the project exists.
-
 The purpose behind creating this project is to show an understanding of the following:
 
 - Setting up a relational database to run store, manipulate and delete data.
