@@ -8,7 +8,7 @@ This is a fullstack web-application that provides a solution for teachers to car
 
 The purpose behind creating this project is to show an understanding of the following:
 
-- Setting up a relational database to run store, manipulate and delete data.
+- Setting up a relational database to fulfill CRUD operations as well as to show knowledge of writing SQL queries.
 
 - How to create a RESTful API using Node and Express which can run logic based on user interaction to satisfy their administrative needs.
 
