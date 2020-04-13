@@ -2,24 +2,19 @@
 
 ## About
 
-A little info about your project and/ or overview that explains **what** the project is about.
+This is a fullstack web-application that provides a solution for teachers to carry out administration tasks for their students.
 
 ## Motivation
 
 A short description of the motivation behind the creation and maintenance of the project. This should explain **why** the project exists.
 
-## Build status
+The purpose behind creating this project is to show an understanding of the following:
 
-Build status of continus integration i.e. travis, appveyor etc. Ex. -
+- Setting up a relational database to run store, manipulate and delete data.
 
-[![Build Status](https://travis-ci.org/akashnimare/foco.svg?branch=master)](https://travis-ci.org/akashnimare/foco)
-[![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/akashnimare/foco?branch=master&svg=true)](https://ci.appveyor.com/project/akashnimare/foco/branch/master)
+- How to create a RESTful API using Node and Express which can run logic based on user interaction to satisfy their administrative needs.
 
-## Code style
-
-If you're using any code style like xo, standard etc. That will help others while contributing to your project. Ex. -
-
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard)
+- How to create a user-friendly UI using React.
 
 ## Screenshots
 
@@ -27,11 +22,15 @@ Include logo/demo screenshot etc.
 
 ## Tech/framework used
 
-Ex. -
-
 <b>Built with</b>
 
-- [Electron](https://electron.atom.io)
+- [PostgreSQL](https://www.postgresql.org/)
+
+- [Node.js](https://nodejs.org/en/)
+
+- [Express](https://expressjs.com/)
+
+- [React.js](https://reactjs.org/)
 
 ## Features
 
