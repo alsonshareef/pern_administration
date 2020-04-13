@@ -12,7 +12,7 @@ router.post('/', async (req, res) => {
   try {
     const { first_name, last_name, email } = req.body;
     const newStudent = await db.query(
-      'INSERT INTO students (first_name, last_name, email) values ($1, $2, $3) RETURNING *',
+      'INSERT INTO student (first_name, last_name, email) values ($1, $2, $3) RETURNING *',
       [first_name, last_name, email]
     );
 
