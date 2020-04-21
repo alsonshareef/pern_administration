@@ -7,6 +7,7 @@ dotenv.config({ path: '../config/config.env' });
 
 const homepageRoute = require('./routes/homepage');
 const studentsRoute = require('./routes/students');
+const teachersRoute = require('./routes/teachers');
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 // ROUTES
 app.use('/api', homepageRoute);
 app.use('/api/students', studentsRoute);
+app.use('/api/teachers', teachersRoute);
 
 // PRODUCTION SETUP
 if (process.env.NODE_ENV === 'production') {
