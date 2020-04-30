@@ -12,6 +12,8 @@ The purpose behind creating this project is to show an understanding of the foll
 
 - How to create a RESTful API using Node and Express which can run logic based on user interaction to satisfy their administrative needs.
 
+- How to utilise a design pattern such as MVC to add structure and modularity to the backend code to leave it easier to maintain.
+
 - How to create a user-friendly UI using React.
 
 ## Screenshots
