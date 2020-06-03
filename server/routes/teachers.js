@@ -3,12 +3,12 @@ const router = express.Router();
 
 const db = require('../database');
 
-// Teachers homepage.
+// READ -- Teachers homepage.
 router.get('/', (req, res) => {
   res.send('Teachers page');
 });
 
-// Create a new teacher.
+// CREATE -- Create a new teacher.
 router.post('/', async (req, res) => {
   try {
     const { first_name, last_name, email, pass } = req.body;
