@@ -1,10 +1,10 @@
 const Pool = require('pg').Pool;
 
 const pool = new Pool({
-  user: 'postgres',
-  password: 'secret',
+  user: 'alsonshareef',
+  password: 'password',
   host: 'localhost',
-  database: 'docker_pern_admin',
+  database: 'pern_admin',
   port: 5432,
 });
 
