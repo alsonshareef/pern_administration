@@ -40,14 +40,22 @@ create table teachers (
 CREATE TABLE student_teacher_registration (
   student_id BIGSERIAL NOT NULL,
   teacher_id BIGSERIAL NOT NULL,
+  registration_date timestamp,
   PRIMARY KEY (student_id, teacher_id),
   FOREIGN KEY (student_id) REFERENCES students(id),
   FOREIGN KEY (teacher_id) REFERENCES teachers(id)
 );
 
 -- Placeholder data
+  -- STUDENTS
 insert into students (first_name, last_name, email, pass, suspended) values ('John', 'Doe', 'john.doe@test.com', 'test', false);
 insert into students (first_name, last_name, email, pass, suspended) values ('Bill', 'Bob', 'bill.bob@test.com', 'test', false);
 
+  -- TEACHERS
 insert into teachers (first_name, last_name, email, pass) values ('English', 'Teacher', 'english.teacher@test.com', 'test');
 insert into teachers (first_name, last_name, email, pass) values ('Math', 'Teacher', 'math.teacher@test.com', 'test');
+insert into teachers (first_name, last_name, email, pass) values ('Chemistry', 'Teacher', 'chemistry.teacher@test.com', 'test');
+insert into teachers (first_name, last_name, email, pass) values ('Physics', 'Teacher', 'physics.teacher@test.com', 'test');
+
+  -- REGISTRATIONS
+insert into student_teacher_registration (student_id, teacher_id, registration_date) values (1, 1, NOW());
