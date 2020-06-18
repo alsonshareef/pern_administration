@@ -37,9 +37,9 @@ create table teachers (
   pass VARCHAR(128) NOT NULL
 );
 
-CREATE TABLE student_teacher_registration (
-  student_id BIGSERIAL NOT NULL,
-  teacher_id BIGSERIAL NOT NULL,
+CREATE TABLE registrations (
+  student_id BIGINT NOT NULL,
+  teacher_id BIGINT NOT NULL,
   registration_date timestamp,
   PRIMARY KEY (student_id, teacher_id),
   FOREIGN KEY (student_id) REFERENCES students(id),
@@ -58,4 +58,4 @@ insert into teachers (first_name, last_name, email, pass) values ('Chemistry', '
 insert into teachers (first_name, last_name, email, pass) values ('Physics', 'Teacher', 'physics.teacher@test.com', 'test');
 
   -- REGISTRATIONS
-insert into student_teacher_registration (student_id, teacher_id, registration_date) values (1, 1, NOW());
+insert into registrations (student_id, teacher_id, registration_date) values (1, 1, NOW());
