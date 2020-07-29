@@ -3,7 +3,7 @@
 REQUIRED FUNCTIONALITY
    > Relational database which stores the following data:
      1. Login info for both students and teachers.
-     2. What students are registered under a which teachers.
+     2. What students are registered under which teachers.
      3. Suspension status of a student.
 
    > Authentication and Authorization for logging in as a student or a teacher.
