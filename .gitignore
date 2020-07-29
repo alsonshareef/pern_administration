@@ -8,3 +8,5 @@
 # production
 /client/build
 
+# global environment variables
+.env
