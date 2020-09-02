@@ -2,7 +2,11 @@ const express = require('express');
 const dotenv = require('dotenv').config();
 const colors = require('colors');
 
+const teacherRoutes = require('./routes/teacher');
+
 const app = express();
+
+app.use('/teacher', teacherRoutes);
 
 app.get('/', (req, res, next) => {
   res.send('Hey');
