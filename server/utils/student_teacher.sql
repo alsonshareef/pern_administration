@@ -1,5 +1,5 @@
 CREATE TABLE students (
-  id SERIAL PRIMARY KEY NOT NULL,
+  id SERIAL NOT NULL PRIMARY KEY,
   first_name VARCHAR(200) NOT NULL,
   last_name VARCHAR(200) NOT NULL,
   email VARCHAR(200) NOT NULL,
@@ -9,7 +9,7 @@ CREATE TABLE students (
 );
 
 CREATE TABLE teachers (
-  id SERIAL PRIMARY KEY NOT NULL,
+  id SERIAL NOT NULL PRIMARY KEY,
   first_name VARCHAR(200) NOT NULL,
   last_name VARCHAR(200) NOT NULL,
   email VARCHAR(200) NOT NULL,
@@ -22,5 +22,28 @@ CREATE TABLE student_teacher_registration (
   teacher_id int NOT NULL,
   PRIMARY KEY (student_id, teacher_id),
   FOREIGN KEY (teacher_id) REFERENCES teachers(id) ON DELETE CASCADE,
-  FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
+  FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
 );
+
+/* PLACEHOLDER DATA */
+
+-- STUDENTS
+INSERT INTO students(first_name, last_name, email, password, suspension_status) VALUES ('Alson', 'Shareef', 'test@email.com', 'test', 'false');
+INSERT INTO students(first_name, last_name, email, password, suspension_status) VALUES ('John', 'Johnson', 'test@email.com1', 'test', 'true');
+INSERT INTO students(first_name, last_name, email, password, suspension_status) VALUES ('Bob', 'Bobson', 'test@email.com2', 'test', 'f');
+
+-- TEACHERS
+INSERT INTO teachers(first_name, last_name, email, password) VALUES ('Mr', 'Iqbaal', 'test@Teacheremail.com', 'test');
+INSERT INTO teachers(first_name, last_name, email, password) VALUES ('Mr', 'Man', 'test@Teacheremail.com1', 'test');
+INSERT INTO teachers(first_name, last_name, email, password) VALUES ('Mrs', 'Jimmy', 'test@Teacheremail.com2', 'test');
+
+-- REGISTRATIONS
+INSERT INTO student_teacher_registration(student_id, teacher_id) VALUES (1,4);
+INSERT INTO student_teacher_registration(student_id, teacher_id) VALUES (1,5);
+INSERT INTO student_teacher_registration(student_id, teacher_id) VALUES (2,4);
+INSERT INTO student_teacher_registration(student_id, teacher_id) VALUES (2,6);
+INSERT INTO student_teacher_registration(student_id, teacher_id) VALUES (3,6);
+
+/* DROP TABLES QUERY */
+
+DROP TABLE student_teacher_registration; DROP TABLE students; DROP TABLE teachers; 
