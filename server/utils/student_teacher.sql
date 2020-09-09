@@ -17,7 +17,7 @@ CREATE TABLE teachers (
   UNIQUE (email)
 );
 
-CREATE TABLE student_teacher_registration (
+CREATE TABLE registrations (
   student_id int NOT NULL,
   teacher_id int NOT NULL,
   PRIMARY KEY (student_id, teacher_id),
@@ -38,12 +38,21 @@ INSERT INTO teachers(first_name, last_name, email, password) VALUES ('Mr', 'Man'
 INSERT INTO teachers(first_name, last_name, email, password) VALUES ('Mrs', 'Jimmy', 'test@Teacheremail.com2', 'test');
 
 -- REGISTRATIONS
-INSERT INTO student_teacher_registration(student_id, teacher_id) VALUES (1,4);
-INSERT INTO student_teacher_registration(student_id, teacher_id) VALUES (1,5);
-INSERT INTO student_teacher_registration(student_id, teacher_id) VALUES (2,4);
-INSERT INTO student_teacher_registration(student_id, teacher_id) VALUES (2,6);
-INSERT INTO student_teacher_registration(student_id, teacher_id) VALUES (3,6);
+INSERT INTO registrations(student_id, teacher_id) VALUES (1,4);
+INSERT INTO registrations(student_id, teacher_id) VALUES (1,5);
+INSERT INTO registrations(student_id, teacher_id) VALUES (2,4);
+INSERT INTO registrations(student_id, teacher_id) VALUES (2,6);
+INSERT INTO registrations(student_id, teacher_id) VALUES (3,6);
 
 /* DROP TABLES QUERY */
 
-DROP TABLE student_teacher_registration; DROP TABLE students; DROP TABLE teachers; 
+DROP TABLE registrations; DROP TABLE students; DROP TABLE teachers; 
+
+
+/*  ---  MAIN QUERIES  ---  */
+
+-- Grab all current registrations.
+SELECT students.first_name, teachers.last_name
+FROM students
+INNER JOIN registrations ON students.id = registrations.student_id
+INNER JOIN teachers ON teachers.id = registrations.teacher_id;
