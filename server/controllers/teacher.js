@@ -29,10 +29,20 @@ exports.postRegisterStudent = (req, res, next) => {};
 exports.getCommonStudents = async (req, res, next) => {
   try {
     const registrations = await pool.query(
-      'SELECT students.first_name, teachers.last_name FROM students INNER JOIN registrations ON students.id = registrations.student_id INNER JOIN teachers ON teachers.id = registrations.teacher_id;'
+      `SELECT s.student_first_name, s.student_last_name, t.teacher_first_name, t.teacher_last_name
+      FROM students s
+      INNER JOIN registrations r 
+      ON s.id = r.student_id
+      INNER JOIN teachers t 
+      ON t.id = r.teacher_id;`
     );
 
-    res.json(registrations);
+    const commonStudents = registrations.rows.filter((reg) => {
+      // Eventually filter out students based on teacher authentication.
+      return reg.teacher_last_name === 'Jimmy';
+    });
+
+    res.json(commonStudents);
   } catch (err) {
     console.error(err.message);
   }
