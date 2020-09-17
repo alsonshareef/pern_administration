@@ -7,7 +7,8 @@
      with previous step.
 
 2. [] Create an endpoint authorized to teachers for retrieving a list of students which are registered to a specified list of teachers.
-  - [] Currently able to retrieve all registration details, but need to be able to filter students dynamically using teacher details retrieved
-    from req.body.
+  - [x] Currently able to retrieve all registration details, but need to be able to filter students dynamically using teacher details retrieved
+    from req.query.
+  - [] Instead of retrieving list of ALL students registered between specified teachers, retrieve ONLY common students between list of teachers.
 
 3. [] Create an endpoint authorized to teachers for changing a students suspension status.
