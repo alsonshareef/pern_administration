@@ -1,41 +1,13 @@
 ** TODO LIST **
 
-REQUIRED FUNCTIONALITY
-   > Relational database which stores the following data:
-     1. Login info for both students and teachers.
-     2. What students are registered under which teachers.
-     3. Suspension status of a student.
+1. [] Create an endpoint authorized to teachers for registering students that may or may not exist to a specified teacher that may or may not exist.
+  - [] Retrieve student and teacher data from req.body and check to see if this student and teacher already exists.
+  - [] If the specified student(s) and teacher exists, grab their respective ID's from the student and teacher tables and insert ID's into registration table.
+  - [] If the specified student(s) and teacher don't exist, take the data retrieved from req.body and store them into their tables and continue
+     with previous step.
 
-   > Authentication and Authorization for logging in as a student or a teacher.
-      > When logged in as a teacher:
-         - (CREATE) Can register one or multiple students.
-         - (READ) Retrieve a list of students who are registered under a provided list of teacher names.
-         - (READ) Retrieve a list of students who are able to receive a notification.
-            * Notification eligibility criteria: 
-               1. Must not be suspended.
-               2. Must be registered under teacher looking to send notification OR @ mentioned in the notification.
-         - (UPDATE) Suspend a student which will stop the student from being able to receive messages from teachers.
-         - (DELETE) Unregister a student.
-   
-      > When logged in as a student:
-         - (READ) Retrieve a list of teachers that the student is registered under.
-         - (READ) View their suspension status.
-         - (READ) View notifications that were sent by teachers who either the student is registered under or @ mentioned the student.
+2. [] Create an endpoint authorized to teachers for retrieving a list of students which are registered to a specified list of teachers.
+  - [] Currently able to retrieve all registration details, but need to be able to filter students dynamically using teacher details retrieved
+    from req.body.
 
-   > React frontend will have:
-      - Login page
-      - Teacher homepage which contains:
-         > Link to student registration page.
-         > Link to registered students page.
-            > On this page the teacher can suspend a student or unregister a student on the list.
-         > Link to notification sending page.
-      - Student homepage which contains:
-         > Link to registered teachers page.
-         > Suspension status.
-         > Link to notifications they received page.
-
-
-* CURRENT OBJECTIVES *
-1) Configure PostgreSQL database (many to many relationship).
-  -- Follow freecodecamp tutorial to create student and teacher tables to have a many to many relationship.
-  
+3. [] Create an endpoint authorized to teachers for changing a students suspension status.
