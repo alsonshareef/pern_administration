@@ -10,5 +10,6 @@
   - [x] Currently able to retrieve all registration details, but need to be able to filter students dynamically using teacher details retrieved
     from req.query.
   - [] Instead of retrieving list of ALL students registered between specified teachers, retrieve ONLY common students between list of teachers.
+      > [] Display all of the students registered for a specified teacher if ONLY ONE teacher is specified.
 
 3. [] Create an endpoint authorized to teachers for changing a students suspension status.
