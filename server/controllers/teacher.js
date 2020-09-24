@@ -63,13 +63,12 @@ exports.getCommonStudents = async (req, res, next) => {
       typeof req.query.teachers == 'string'
         ? [req.query.teachers]
         : req.query.teachers;
-    console.log('teachers:', specifiedTeachers);
 
     let commonStudents = [];
     let registeredStudents = [];
 
     if (specifiedTeachers.length > 1) {
-      // Gather all registered students including duplicates
+      // 1. Gather all students registered for each specified teacher including duplicates.
       specifiedTeachers.forEach((teacher) => {
         registrations.rows.forEach((reg) => {
           if (teacher == reg.teacher_email) {
@@ -78,7 +77,7 @@ exports.getCommonStudents = async (req, res, next) => {
         });
       });
 
-      // Look through duplicate registered students and find which students appear more than once to find common students.
+      // 2. Store all duplicate student emails as that means they are common between specified teachers.
       students.rows.forEach((student) => {
         if (getOccurence(registeredStudents, student.student_email) > 1) {
           commonStudents.push(student.student_email);
@@ -95,8 +94,9 @@ exports.getCommonStudents = async (req, res, next) => {
 
     if (commonStudents.length !== 0) {
       res.json({ commonStudents });
+    } else {
+      res.json('There are no common students between the specified teachers.');
     }
-    res.json('There are no common students between the specified teachers.');
   } catch (err) {
     console.error(err.message);
   }
