@@ -6,9 +6,6 @@ const teacherRoutes = require('../controllers/teacher');
 // TEACHER HOMEPAGE
 router.get('/', teacherRoutes.getTeacherHomepage);
 
-// CREATE - Register a new teacher.
-router.post('/createteacher', teacherRoutes.postCreateTeacher);
-
 // CREATE - Register one or more students to a specified teacher.
 router.post('/registerstudents', teacherRoutes.postRegisterStudent);
 
