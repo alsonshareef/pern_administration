@@ -13,21 +13,6 @@ exports.getTeacherHomepage = (req, res, next) => {
   });
 };
 
-// ** MIGHT NOT NEED TO BE NEEDED AS TEACHER AUTHORIZED FUNCTIONALITY ** - Register a new teacher.
-exports.postCreateTeacher = async (req, res, next) => {
-  try {
-    const { firstName, lastName, email, password } = req.body;
-    const newTeacher = await pool.query(
-      'INSERT INTO teachers(first_name, last_name, email, password) VALUES ($1, $2, $3, $4)',
-      [firstName, lastName, email, password]
-    );
-
-    res.json(newTeacher);
-  } catch (err) {
-    console.error(err.message);
-  }
-};
-
 // Register a student or multiple students to a specified teacher.
 exports.postRegisterStudent = async (req, res, next) => {
   try {
@@ -55,7 +40,7 @@ exports.getCommonStudents = async (req, res, next) => {
       ON t.id = r.teacher_id;`
     );
 
-    // Total students
+    // Total registered students
     const students = await pool.query('SELECT student_email from students');
 
     // Specified teachers retrieved from client.
@@ -84,7 +69,7 @@ exports.getCommonStudents = async (req, res, next) => {
         }
       });
     } else {
-      // If only one teacher is specified, display students registered under this one teacher.
+      // If only one teacher is specified, display students registered under the one teacher.
       registrations.rows.forEach((reg) => {
         if (reg.teacher_email == specifiedTeachers[0]) {
           commonStudents.push(reg.student_email);
@@ -93,7 +78,7 @@ exports.getCommonStudents = async (req, res, next) => {
     }
 
     if (commonStudents.length !== 0) {
-      res.json({ commonStudents });
+      res.json({ common_students: commonStudents });
     } else {
       res.json('There are no common students between the specified teachers.');
     }
