@@ -16,13 +16,37 @@ exports.getTeacherHomepage = (req, res, next) => {
 // Register a student or multiple students to a specified teacher.
 exports.postRegisterStudent = async (req, res, next) => {
   try {
-    /**
-     * 1. Retrieve student-to-be-registered's data from req.body and check to see if this student already exists.
-     * 2. If student exists, grab the student id from students table and teacher id from teachers table and insert both ID's into registration table.
-     * 3. If student doesn't exist, add the student-to-be-registered into the students table and continue with step 2.
-     */
-    const students = await pool.query('SELECT * FROM students');
-    res.json(students);
+    // 1. Grab existing students and teacher data to help filter and retrieve ID's of students to be registered and teacher they're registering to.
+    const existingStudents = await pool.query(
+      'SELECT id, student_email FROM students'
+    );
+    const teachers = await pool.query('SELECT id, teacher_email FROM teachers');
+
+    // 2. Set teacherId to the ID of teacher that students will be registered to.
+    let teacherId;
+    teachers.rows.forEach((teacher) => {
+      if (teacher.teacher_email === req.body.teacher) {
+        teacherId = teacher.id;
+      }
+    });
+
+    // 3. When existing student emails are the same as studentsToBeRegistered's emails, store that students ID with specified teacher ID into registrations table.
+    const studentsToBeRegistered = req.body.students;
+    studentsToBeRegistered.forEach((student) => {
+      existingStudents.rows.forEach(async (existingStudent) => {
+        if (student.student_email === existingStudent.student_email) {
+          try {
+            await pool.query(
+              'INSERT INTO registrations(student_id, teacher_id) VALUES ($1, $2) RETURNING *',
+              [existingStudent.id, teacherId]
+            );
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      });
+    });
+    res.json('Students were registered successfully!');
   } catch (err) {
     console.error(err.message);
   }
@@ -51,6 +75,10 @@ exports.getCommonStudents = async (req, res, next) => {
 
     let commonStudents = [];
     let registeredStudents = [];
+
+    if (specifiedTeachers == undefined) {
+      res.json('Please specify a teacher');
+    }
 
     if (specifiedTeachers.length > 1) {
       // 1. Gather all students registered for each specified teacher including duplicates.
