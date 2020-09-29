@@ -36,6 +36,7 @@ INSERT INTO students(student_first_name, student_last_name, student_email, stude
 INSERT INTO teachers(teacher_first_name, teacher_last_name, teacher_email, teacher_password) VALUES ('Moe', 'Iqbaal', 'test@Teacheremail.com', 'test');
 INSERT INTO teachers(teacher_first_name, teacher_last_name, teacher_email, teacher_password) VALUES ('Big', 'Man', 'test@Teacheremail.com1', 'test');
 INSERT INTO teachers(teacher_first_name, teacher_last_name, teacher_email, teacher_password) VALUES ('Small', 'Jimmy', 'test@Teacheremail.com2', 'test');
+INSERT INTO teachers(teacher_first_name, teacher_last_name, teacher_email, teacher_password) VALUES ('Mister', 'Man', 'mister@Teacheremail.man', 'test');
 
 -- REGISTRATIONS
 INSERT INTO registrations(student_id, teacher_id) VALUES (4,4);
