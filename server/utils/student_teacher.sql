@@ -3,8 +3,8 @@ CREATE TABLE students (
   student_first_name VARCHAR(200) NOT NULL,
   student_last_name VARCHAR(200) NOT NULL,
   student_email VARCHAR(200) NOT NULL,
-  student_password VARCHAR(200) NOT NULL,
-  suspension_status BOOLEAN NOT NULL,
+  student_password VARCHAR(200) DEFAULT 'password',
+  suspension_status BOOLEAN DEFAULT 'f',
   UNIQUE (student_email)
 );
 
@@ -13,7 +13,7 @@ CREATE TABLE teachers (
   teacher_first_name VARCHAR(200) NOT NULL,
   teacher_last_name VARCHAR(200) NOT NULL,
   teacher_email VARCHAR(200) NOT NULL,
-  teacher_password VARCHAR(200) NOT NULL,
+  teacher_password VARCHAR(200) DEFAULT 'password',
   UNIQUE (teacher_email)
 );
 
@@ -28,23 +28,23 @@ CREATE TABLE registrations (
 /* PLACEHOLDER DATA */
 
 -- STUDENTS
-INSERT INTO students(student_first_name, student_last_name, student_email, student_password, suspension_status) VALUES ('Alson', 'Shareef', 'alson@shareef.com', 'test', 'false');
-INSERT INTO students(student_first_name, student_last_name, student_email, student_password, suspension_status) VALUES ('John', 'Johnson', 'john@johnson.com', 'test', 'true');
-INSERT INTO students(student_first_name, student_last_name, student_email, student_password, suspension_status) VALUES ('Bob', 'Bobson', 'bob@bobson.com', 'test', 'f');
+INSERT INTO students(student_first_name, student_last_name, student_email) VALUES ('Alson', 'Shareef', 'alson@shareef.com');
+INSERT INTO students(student_first_name, student_last_name, student_email) VALUES ('John', 'Johnson', 'john@johnson.com');
+INSERT INTO students(student_first_name, student_last_name, student_email) VALUES ('Bob', 'Bobson', 'bob@bobson.com');
 
 -- TEACHERS
-INSERT INTO teachers(teacher_first_name, teacher_last_name, teacher_email, teacher_password) VALUES ('Moe', 'Iqbaal', 'test@Teacheremail.com', 'test');
-INSERT INTO teachers(teacher_first_name, teacher_last_name, teacher_email, teacher_password) VALUES ('Big', 'Man', 'test@Teacheremail.com1', 'test');
-INSERT INTO teachers(teacher_first_name, teacher_last_name, teacher_email, teacher_password) VALUES ('Small', 'Jimmy', 'test@Teacheremail.com2', 'test');
-INSERT INTO teachers(teacher_first_name, teacher_last_name, teacher_email, teacher_password) VALUES ('Mister', 'Man', 'mister@Teacheremail.man', 'test');
+INSERT INTO teachers(teacher_first_name, teacher_last_name, teacher_email) VALUES ('Moe', 'Iqbaal', 'test@Teacheremail.com');
+INSERT INTO teachers(teacher_first_name, teacher_last_name, teacher_email) VALUES ('Big', 'Man', 'test@Teacheremail.com1');
+INSERT INTO teachers(teacher_first_name, teacher_last_name, teacher_email) VALUES ('Small', 'Jimmy', 'test@Teacheremail.com2');
+INSERT INTO teachers(teacher_first_name, teacher_last_name, teacher_email) VALUES ('Mister', 'Man', 'mister@Teacheremail.man');
 
 -- REGISTRATIONS
-INSERT INTO registrations(student_id, teacher_id) VALUES (4,4);
-INSERT INTO registrations(student_id, teacher_id) VALUES (4,5);
-INSERT INTO registrations(student_id, teacher_id) VALUES (6,5);
-INSERT INTO registrations(student_id, teacher_id) VALUES (5,4);
-INSERT INTO registrations(student_id, teacher_id) VALUES (5,6);
-INSERT INTO registrations(student_id, teacher_id) VALUES (6,6);
+INSERT INTO registrations(student_id, teacher_id) VALUES (1,1);
+INSERT INTO registrations(student_id, teacher_id) VALUES (1,2);
+INSERT INTO registrations(student_id, teacher_id) VALUES (3,2);
+INSERT INTO registrations(student_id, teacher_id) VALUES (2,1);
+INSERT INTO registrations(student_id, teacher_id) VALUES (2,3);
+INSERT INTO registrations(student_id, teacher_id) VALUES (3,3);
 
 /* DROP TABLES QUERY */
 
