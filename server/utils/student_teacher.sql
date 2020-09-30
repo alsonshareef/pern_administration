@@ -33,10 +33,10 @@ INSERT INTO students(student_first_name, student_last_name, student_email) VALUE
 INSERT INTO students(student_first_name, student_last_name, student_email) VALUES ('Bob', 'Bobson', 'bob@bobson.com');
 
 -- TEACHERS
-INSERT INTO teachers(teacher_first_name, teacher_last_name, teacher_email) VALUES ('Moe', 'Iqbaal', 'test@Teacheremail.com');
-INSERT INTO teachers(teacher_first_name, teacher_last_name, teacher_email) VALUES ('Big', 'Man', 'test@Teacheremail.com1');
-INSERT INTO teachers(teacher_first_name, teacher_last_name, teacher_email) VALUES ('Small', 'Jimmy', 'test@Teacheremail.com2');
-INSERT INTO teachers(teacher_first_name, teacher_last_name, teacher_email) VALUES ('Mister', 'Man', 'mister@Teacheremail.man');
+INSERT INTO teachers(teacher_first_name, teacher_last_name, teacher_email) VALUES ('Moe', 'Iqbaal', 'moe.iqbaal@teacher.com');
+INSERT INTO teachers(teacher_first_name, teacher_last_name, teacher_email) VALUES ('Big', 'Man', 'big.man@teacher.com');
+INSERT INTO teachers(teacher_first_name, teacher_last_name, teacher_email) VALUES ('Small', 'Jimmy', 'small.jimmy@teacher.com');
+INSERT INTO teachers(teacher_first_name, teacher_last_name, teacher_email) VALUES ('Mister', 'Man', 'mister.man@teacher.com');
 
 -- REGISTRATIONS
 INSERT INTO registrations(student_id, teacher_id) VALUES (1,1);
