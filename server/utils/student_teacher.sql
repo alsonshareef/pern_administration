@@ -27,18 +27,14 @@ CREATE TABLE registrations (
 
 /* PLACEHOLDER DATA */
 
--- STUDENTS
 INSERT INTO students(student_first_name, student_last_name, student_email) VALUES ('Alson', 'Shareef', 'alson@shareef.com');
 INSERT INTO students(student_first_name, student_last_name, student_email) VALUES ('John', 'Johnson', 'john@johnson.com');
 INSERT INTO students(student_first_name, student_last_name, student_email) VALUES ('Bob', 'Bobson', 'bob@bobson.com');
 
--- TEACHERS
 INSERT INTO teachers(teacher_first_name, teacher_last_name, teacher_email) VALUES ('Moe', 'Iqbaal', 'moe.iqbaal@teacher.com');
 INSERT INTO teachers(teacher_first_name, teacher_last_name, teacher_email) VALUES ('Big', 'Man', 'big.man@teacher.com');
 INSERT INTO teachers(teacher_first_name, teacher_last_name, teacher_email) VALUES ('Small', 'Jimmy', 'small.jimmy@teacher.com');
-INSERT INTO teachers(teacher_first_name, teacher_last_name, teacher_email) VALUES ('Mister', 'Man', 'mister.man@teacher.com');
 
--- REGISTRATIONS
 INSERT INTO registrations(student_id, teacher_id) VALUES (1,1);
 INSERT INTO registrations(student_id, teacher_id) VALUES (1,2);
 INSERT INTO registrations(student_id, teacher_id) VALUES (3,2);
@@ -47,12 +43,9 @@ INSERT INTO registrations(student_id, teacher_id) VALUES (2,3);
 INSERT INTO registrations(student_id, teacher_id) VALUES (3,3);
 
 /* DROP TABLES QUERY */
-
 DROP TABLE registrations; DROP TABLE students; DROP TABLE teachers; 
 
-
 /*  ---  MAIN QUERIES  ---  */
-
 -- Grab all current registrations.
 SELECT s.student_first_name, s.student_last_name, s.student_email, t.teacher_first_name, t.teacher_last_name, t.teacher_email
 FROM students s
