@@ -103,7 +103,11 @@ exports.postRegisterStudent = async (req, res, next) => {
    * PART TWO: Register the students to the specified teachers
    */
 
-  // 1. Retrieve updated existing student/teacher data after part 1.
+  // 1. Arrays for storing ID's of registering teachers and students.
+  let registeringStudentIDs = [];
+  let registeringTeacherIDs = [];
+
+  // 2. Retrieve updated existing student/teacher data after part 1.
   let updatedExistingStudents = await pool.query(
     'SELECT id, student_email FROM students'
   );
@@ -112,13 +116,9 @@ exports.postRegisterStudent = async (req, res, next) => {
     'SELECT id, teacher_email FROM teachers'
   );
 
-  // 2. Store ID's of registering teachers and students.
-  let registeringTeacherIDs = [];
-  let registeringStudentIDs = [];
-
   updatedExistingStudents.rows.forEach((xstudent) => {
     registeringStudents.forEach((rstudent) => {
-      if (xstudent.student_email === rstudent.email) {
+      if (rstudent.email == xstudent.student_email) {
         registeringStudentIDs.push(xstudent.id);
       }
     });
@@ -126,33 +126,30 @@ exports.postRegisterStudent = async (req, res, next) => {
 
   updatedExistingTeachers.rows.forEach((xteacher) => {
     registeringTeachers.forEach((rteacher) => {
-      if (xteacher.teacher_email === rteacher.email) {
+      if (rteacher.email == xteacher.teacher_email) {
         registeringTeacherIDs.push(xteacher.id);
       }
     });
   });
 
-  console.log(`Registering student id's: ${registeringStudentIDs}`);
-  console.log(`Registering teacher id's: ${registeringTeacherIDs}`);
-  // 3. When existing student emails are the same as studentsToBeRegistered's emails, store that students ID with specified teacher ID into registrations table.
-  // const studentsToBeRegistered = req.body.students;
-  // studentsToBeRegistered.forEach((student) => {
-  //   existingStudents.rows.forEach(async (existingStudent) => {
-  //     if (student.student_email === existingStudent.student_email) {
-  //       try {
-  //         await pool.query(
-  //           'INSERT INTO registrations(student_id, teacher_id) VALUES ($1, $2) RETURNING *',
-  //           [existingStudent.id, teacherId]
-  //         );
-  //       } catch (error) {
-  //         console.log(error);
-  //       }
-  //     }
-  //   });
-  // });
-  // res.json('Students were registered successfully!');
+  // console.log(`Rstudent ids: ${registeringStudentIDs}`);
+  // console.log(`Rteacher ids: ${registeringTeacherIDs}`);
 
-  // console.error(err.message);
+  // 3. After registering students/teachers ID's have been gathered, insert data into registration tables.
+  registeringTeacherIDs.forEach((tID) => {
+    registeringStudentIDs.forEach(async (sID) => {
+      try {
+        await pool.query(
+          'INSERT INTO registrations(student_id, teacher_id) VALUES ($1,$2)',
+          [sID, tID]
+        );
+      } catch (error) {
+        console.error('Was not able to insert registration data.');
+      }
+    });
+  });
+
+  res.json('Students were registered successfully!');
 };
 
 // Retrieve all the common students between a given list of teachers.
