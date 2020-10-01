@@ -1,15 +1,21 @@
 const express = require('express');
+const app = express();
 const dotenv = require('dotenv').config();
 const colors = require('colors');
+const jwt = require('jsonwebtoken');
+
+app.use(express.json());
 
 const teacherRoutes = require('./routes/teacher');
 
-const app = express();
+/**
+ * ROUTES
+ */
 
-app.use('/teacher', teacherRoutes);
+app.use('/api/v1/teacher', teacherRoutes);
 
 app.get('/', (req, res, next) => {
-  res.send('Hey');
+  res.redirect('/api/v1/teacher');
 });
 
 const PORT = process.env.PORT;
