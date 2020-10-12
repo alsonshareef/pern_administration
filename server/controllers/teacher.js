@@ -33,8 +33,8 @@ exports.postRegisterStudent = async (req, res, next) => {
 
   if (existingStudents.rows.length > 0) {
     // If there is at least 1 existing student account, compare registering + existing data to ensure no duplicate student accounts are created.
-    existingStudents.rows.forEach((xstudent) => {
-      registeringStudents.forEach(async (rstudent) => {
+    for (const xstudent of existingStudents.rows) {
+      for (const rstudent of registeringStudents) {
         if (rstudent.email !== xstudent.student_email) {
           try {
             await pool.query(
@@ -47,11 +47,11 @@ exports.postRegisterStudent = async (req, res, next) => {
             // );
           }
         }
-      });
-    });
+      }
+    }
   } else {
     // If no existing student accounts, create accounts for all registering students.
-    registeringStudents.forEach(async (rstudent) => {
+    for (const rstudent of registeringStudents) {
       try {
         await pool.query(
           'INSERT INTO students(student_first_name, student_last_name, student_email) VALUES ($1, $2, $3)',
@@ -62,14 +62,14 @@ exports.postRegisterStudent = async (req, res, next) => {
         //   'A registering student is trying to create an account when student already exists.'
         // );
       }
-    });
+    }
   }
 
   if (existingTeachers.rows.length > 0) {
     // If there is at least 1 existing teacher account, compare registering + existing data to ensure no duplicate teacher accounts are created.
-    existingTeachers.rows.forEach((xteacher) => {
-      registeringTeachers.forEach(async (rteacher) => {
-        if (rteacher.email !== xteacher.student_email) {
+    for (const xteacher of existingTeachers.rows) {
+      for (const rteacher of registeringTeachers) {
+        if (rteacher.email !== xteacher.teacher_email) {
           try {
             await pool.query(
               'INSERT INTO teachers(teacher_first_name, teacher_last_name, teacher_email) VALUES ($1, $2, $3)',
@@ -81,11 +81,11 @@ exports.postRegisterStudent = async (req, res, next) => {
             // );
           }
         }
-      });
-    });
+      }
+    }
   } else {
     // If no existing teacher accounts, create accounts for all registering teachers.
-    registeringTeachers.forEach(async (rteacher) => {
+    for (const rteacher of registeringTeachers) {
       try {
         await pool.query(
           'INSERT INTO teachers(teacher_first_name, teacher_last_name, teacher_email) VALUES ($1, $2, $3)',
@@ -96,7 +96,7 @@ exports.postRegisterStudent = async (req, res, next) => {
         //   'A registering student is trying to create an account when student already exists.'
         // );
       }
-    });
+    }
   }
 
   /**
@@ -116,32 +116,28 @@ exports.postRegisterStudent = async (req, res, next) => {
     'SELECT id, teacher_email FROM teachers'
   );
 
-  /**
-   * MAKE THIS RUN AFTER ENSURING updatedExisting data holds all data.
-   */
-
-  updatedExistingStudents.rows.forEach((xstudent) => {
-    registeringStudents.forEach((rstudent) => {
+  for (const xstudent of updatedExistingStudents.rows) {
+    for (const rstudent of registeringStudents) {
       if (rstudent.email == xstudent.student_email) {
         registeringStudentIDs.push(xstudent.id);
       }
-    });
-  });
+    }
+  }
 
-  updatedExistingTeachers.rows.forEach((xteacher) => {
-    registeringTeachers.forEach((rteacher) => {
+  for (const xteacher of updatedExistingTeachers.rows) {
+    for (const rteacher of registeringTeachers) {
       if (rteacher.email == xteacher.teacher_email) {
         registeringTeacherIDs.push(xteacher.id);
       }
-    });
-  });
+    }
+  }
 
   console.log(`Rstudent ids: ${registeringStudentIDs}`);
   console.log(`Rteacher ids: ${registeringTeacherIDs}`);
 
   // 3. After registering students/teachers ID's have been gathered, insert data into registration tables.
-  registeringTeacherIDs.forEach((tID) => {
-    registeringStudentIDs.forEach(async (sID) => {
+  for (const tID of registeringTeacherIDs) {
+    for (const sID of registeringStudentIDs) {
       try {
         await pool.query(
           'INSERT INTO registrations(student_id, teacher_id) VALUES ($1,$2)',
@@ -152,8 +148,8 @@ exports.postRegisterStudent = async (req, res, next) => {
           'Was not able to insert registration data because data either already exists or was invalid.'
         );
       }
-    });
-  });
+    }
+  }
 
   res.json('Students were registered successfully!');
 };
