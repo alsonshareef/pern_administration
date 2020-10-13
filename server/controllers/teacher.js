@@ -42,9 +42,7 @@ exports.postRegisterStudent = async (req, res, next) => {
               [rstudent.first_name, rstudent.last_name, rstudent.email]
             );
           } catch (error) {
-            // console.log(
-            //   'A registering student is trying to create an account when student already exists.'
-            // );
+            console.error(`'${rstudent.email}' already has an account.`);
           }
         }
       }
@@ -58,9 +56,7 @@ exports.postRegisterStudent = async (req, res, next) => {
           [rstudent.first_name, rstudent.last_name, rstudent.email]
         );
       } catch (error) {
-        // console.log(
-        //   'A registering student is trying to create an account when student already exists.'
-        // );
+        console.error(`'${rstudent.email}' already has an account.`);
       }
     }
   }
@@ -76,9 +72,7 @@ exports.postRegisterStudent = async (req, res, next) => {
               [rteacher.first_name, rteacher.last_name, rteacher.email]
             );
           } catch (error) {
-            // console.log(
-            //   'A registering teacher is trying to create an account when teacher already exists.'
-            // );
+            console.error(`'${rteacher.email}' already has an account.`);
           }
         }
       }
@@ -92,9 +86,7 @@ exports.postRegisterStudent = async (req, res, next) => {
           [rteacher.first_name, rteacher.last_name, rteacher.email]
         );
       } catch (error) {
-        // console.log(
-        //   'A registering student is trying to create an account when student already exists.'
-        // );
+        console.error(`'${rteacher.email}' already has an account.`);
       }
     }
   }
@@ -196,7 +188,7 @@ exports.getCommonStudents = async (req, res, next) => {
         }
       }
     } else {
-      // If only one teacher is specified, display students registered under the one teacher.
+      // If only one teacher is specified, display all students registered under the one teacher.
       for (const reg of registrations.rows) {
         if (reg.teacher_email == specifiedTeachers[0]) {
           commonStudents.push(reg.student_email);
@@ -217,5 +209,5 @@ exports.getCommonStudents = async (req, res, next) => {
 // Suspend a student.
 exports.postSuspendStudent = (req, res, next) => {};
 
-// Retrieve a list of students who are authorized to receive a notification.
-exports.postRetrieveNotifications = (req, res, next) => {};
+// Unregister one or more students from specified teachers.
+exports.unregisterStudents = (req, res, next) => {};
