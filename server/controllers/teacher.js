@@ -164,8 +164,8 @@ exports.getCommonStudents = async (req, res, next) => {
         ? [req.query.teachers]
         : req.query.teachers;
 
-    let commonStudents = [];
-    let registeredStudents = [];
+    let commonStudentsEmails = [];
+    let registeredStudentsEmails = [];
 
     if (specifiedTeachers == undefined) {
       res.json('Please specify a teacher');
@@ -176,28 +176,28 @@ exports.getCommonStudents = async (req, res, next) => {
       for (const teacher of specifiedTeachers) {
         for (const reg of registrations.rows) {
           if (teacher == reg.teacher_email) {
-            registeredStudents.push(reg.student_email);
+            registeredStudentsEmails.push(reg.student_email);
           }
         }
       }
 
       // 2. Store all duplicate student emails as that means they are common between specified teachers.
       for (const student of students.rows) {
-        if (getOccurence(registeredStudents, student.student_email) > 1) {
-          commonStudents.push(student.student_email);
+        if (getOccurence(registeredStudentsEmails, student.student_email) > 1) {
+          commonStudentsEmails.push(student.student_email);
         }
       }
     } else {
-      // If only one teacher is specified, display all students registered under the one teacher.
+      // If only one teacher is specified, display all students registered under the one specified teacher.
       for (const reg of registrations.rows) {
         if (reg.teacher_email == specifiedTeachers[0]) {
-          commonStudents.push(reg.student_email);
+          commonStudentsEmails.push(reg.student_email);
         }
       }
     }
 
-    if (commonStudents.length !== 0) {
-      res.json({ common_students: commonStudents });
+    if (commonStudentsEmails.length !== 0) {
+      res.json({ common_students: commonStudentsEmails });
     } else {
       res.json('There are no common students between the specified teachers.');
     }
