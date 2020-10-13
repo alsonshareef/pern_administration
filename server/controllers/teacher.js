@@ -132,9 +132,6 @@ exports.postRegisterStudent = async (req, res, next) => {
     }
   }
 
-  console.log(`Rstudent ids: ${registeringStudentIDs}`);
-  console.log(`Rteacher ids: ${registeringTeacherIDs}`);
-
   // 3. After registering students/teachers ID's have been gathered, insert data into registration tables.
   for (const tID of registeringTeacherIDs) {
     for (const sID of registeringStudentIDs) {
@@ -184,27 +181,27 @@ exports.getCommonStudents = async (req, res, next) => {
 
     if (specifiedTeachers.length > 1) {
       // 1. Gather all students registered for each specified teacher including duplicates.
-      specifiedTeachers.forEach((teacher) => {
-        registrations.rows.forEach((reg) => {
+      for (const teacher of specifiedTeachers) {
+        for (const reg of registrations.rows) {
           if (teacher == reg.teacher_email) {
             registeredStudents.push(reg.student_email);
           }
-        });
-      });
+        }
+      }
 
       // 2. Store all duplicate student emails as that means they are common between specified teachers.
-      students.rows.forEach((student) => {
+      for (const student of students.rows) {
         if (getOccurence(registeredStudents, student.student_email) > 1) {
           commonStudents.push(student.student_email);
         }
-      });
+      }
     } else {
       // If only one teacher is specified, display students registered under the one teacher.
-      registrations.rows.forEach((reg) => {
+      for (const reg of registrations.rows) {
         if (reg.teacher_email == specifiedTeachers[0]) {
           commonStudents.push(reg.student_email);
         }
-      });
+      }
     }
 
     if (commonStudents.length !== 0) {
