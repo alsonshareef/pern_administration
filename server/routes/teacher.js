@@ -15,10 +15,7 @@ router.get('/commonstudents', teacherRoutes.getCommonStudents);
 // UPDATE - Suspend a specified student.
 router.post('/suspend', teacherRoutes.postSuspendStudent);
 
-// READ - Retrieve a list of students who are eligible to receieve notifications.
-router.post(
-  '/retrievefornotifications',
-  teacherRoutes.postRetrieveNotifications
-);
+// DELETE - Unregister one or more students from specified teachers.
+router.post('/unregister', teacherRoutes.unregisterStudents);
 
 module.exports = router;
