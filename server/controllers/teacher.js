@@ -2,7 +2,10 @@
  * TEACHER CONTROLLER METHODS
  */
 
-const pool = require('../utils/db');
+const pool = require('../database');
+const { registerStudents } = require('../models/Teacher');
+
+const Teacher = require('../models/Teacher');
 
 const getOccurence = require('../utils/get_occurence');
 
@@ -20,125 +23,32 @@ exports.postRegisterStudent = async (req, res, next) => {
 	 */
 
 	// Students and Teachers that already have accounts.
-	let existingStudents = await pool.query(
-		'SELECT id, student_email FROM students'
-	);
-	let existingTeachers = await pool.query(
-		'SELECT id, teacher_email FROM teachers'
-	);
+	let existingStudents = await Teacher.retrieveRegisteredStudents();
+	let existingTeachers = await Teacher.retrieveRegisteredTeachers();
 
 	// Store the registering students and teachers that may or may not already have accounts.
 	const registeringStudents = req.body.students;
 	const registeringTeachers = req.body.teachers;
 
-	if (existingStudents.rows.length > 0) {
-		// If there is at least 1 existing student account, compare registering + existing data to ensure no duplicate student accounts are created.
-		for (const xstudent of existingStudents.rows) {
-			for (const rstudent of registeringStudents) {
-				if (rstudent.email !== xstudent.student_email) {
-					try {
-						await pool.query(
-							'INSERT INTO students(student_first_name, student_last_name, student_email) VALUES ($1, $2, $3)',
-							[rstudent.first_name, rstudent.last_name, rstudent.email]
-						);
-					} catch (error) {
-						console.error(`'${rstudent.email}' already has an account.`);
-					}
-				}
-			}
-		}
-	} else {
-		// If no existing student accounts, create accounts for all registering students.
-		for (const rstudent of registeringStudents) {
-			try {
-				await pool.query(
-					'INSERT INTO students(student_first_name, student_last_name, student_email) VALUES ($1, $2, $3)',
-					[rstudent.first_name, rstudent.last_name, rstudent.email]
-				);
-			} catch (error) {
-				console.error(`'${rstudent.email}' already has an account.`);
-			}
-		}
-	}
-
-	if (existingTeachers.rows.length > 0) {
-		// If there is at least 1 existing teacher account, compare registering + existing data to ensure no duplicate teacher accounts are created.
-		for (const xteacher of existingTeachers.rows) {
-			for (const rteacher of registeringTeachers) {
-				if (rteacher.email !== xteacher.teacher_email) {
-					try {
-						await pool.query(
-							'INSERT INTO teachers(teacher_first_name, teacher_last_name, teacher_email) VALUES ($1, $2, $3)',
-							[rteacher.first_name, rteacher.last_name, rteacher.email]
-						);
-					} catch (error) {
-						console.error(`'${rteacher.email}' already has an account.`);
-					}
-				}
-			}
-		}
-	} else {
-		// If no existing teacher accounts, create accounts for all registering teachers.
-		for (const rteacher of registeringTeachers) {
-			try {
-				await pool.query(
-					'INSERT INTO teachers(teacher_first_name, teacher_last_name, teacher_email) VALUES ($1, $2, $3)',
-					[rteacher.first_name, rteacher.last_name, rteacher.email]
-				);
-			} catch (error) {
-				console.error(`'${rteacher.email}' already has an account.`);
-			}
-		}
-	}
+	// Add students/teachers if they don't already have accounts.
+	await Teacher.AddStudents(existingStudents, registeringStudents);
+	await Teacher.AddTeachers(existingTeachers, registeringTeachers);
 
 	/**
 	 * PART TWO: Register the students to the specified teachers
 	 */
 
-	// 1. Arrays for storing ID's of registering teachers and students.
-	let registeringStudentIDs = [];
-	let registeringTeacherIDs = [];
+	// Retrieve updated existing student/teacher data after part 1.
+	let updatedExistingStudents = await Teacher.retrieveRegisteredStudents();
+	let updatedExistingTeachers = await Teacher.retrieveRegisteredTeachers();
 
-	// 2. Retrieve updated existing student/teacher data after part 1.
-	let updatedExistingStudents = await pool.query(
-		'SELECT id, student_email FROM students'
+	// Register the registering students to the registering teachers specified.
+	await Teacher.registerStudents(
+		updatedExistingStudents,
+		updatedExistingTeachers,
+		registeringStudents,
+		registeringTeachers
 	);
-
-	let updatedExistingTeachers = await pool.query(
-		'SELECT id, teacher_email FROM teachers'
-	);
-
-	for (const xstudent of updatedExistingStudents.rows) {
-		for (const rstudent of registeringStudents) {
-			if (rstudent.email == xstudent.student_email) {
-				registeringStudentIDs.push(xstudent.id);
-			}
-		}
-	}
-
-	for (const xteacher of updatedExistingTeachers.rows) {
-		for (const rteacher of registeringTeachers) {
-			if (rteacher.email == xteacher.teacher_email) {
-				registeringTeacherIDs.push(xteacher.id);
-			}
-		}
-	}
-
-	// 3. After registering students/teachers ID's have been gathered, insert data into registration tables.
-	for (const tID of registeringTeacherIDs) {
-		for (const sID of registeringStudentIDs) {
-			try {
-				await pool.query(
-					'INSERT INTO registrations(student_id, teacher_id) VALUES ($1,$2)',
-					[sID, tID]
-				);
-			} catch (error) {
-				console.error(
-					'Was not able to insert registration data because data either already exists or was invalid.'
-				);
-			}
-		}
-	}
 
 	res.json('Students were registered successfully!');
 };
