@@ -42,10 +42,11 @@ INSERT INTO registrations(student_id, teacher_id) VALUES (2,1);
 INSERT INTO registrations(student_id, teacher_id) VALUES (2,3);
 INSERT INTO registrations(student_id, teacher_id) VALUES (3,3);
 
-/* DROP TABLES QUERY */
+/*  ---  MAIN QUERIES  ---  */
+
+/* Drop all tables */
 DROP TABLE registrations; DROP TABLE students; DROP TABLE teachers; 
 
-/*  ---  MAIN QUERIES  ---  */
 -- Grab all current registrations.
 SELECT s.student_first_name, s.student_last_name, s.student_email, t.teacher_first_name, t.teacher_last_name, t.teacher_email
 FROM students s
