@@ -15,11 +15,11 @@ const teacherRoutes = require('./routes/teacher');
 app.use('/api/v1/teacher', teacherRoutes);
 
 app.get('/', (req, res, next) => {
-  res.redirect('/api/v1/teacher');
+	res.redirect('/api/v1/teacher');
 });
 
 const PORT = process.env.PORT;
 const ENV = process.env.NODE_ENV;
 app.listen(PORT, () =>
-  console.log(`Listening in ${ENV} on port ${PORT}`.bold.cyan)
+	console.log(`Listening in ${ENV} on port ${PORT}`.bold.cyan)
 );
