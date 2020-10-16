@@ -24,30 +24,70 @@ exports.postRegisterStudent = async (req, res, next) => {
 	const registeringTeachers = req.body.teachers;
 
 	// b) Retrieve students and Teachers that already have accounts.
-	let existingStudents = await Teacher.retrieveRegisteredStudents();
-	let existingTeachers = await Teacher.retrieveRegisteredTeachers();
+	let existingStudents;
+	let existingTeachers;
+
+	try {
+		existingStudents = await Teacher.retrieveRegisteredStudents();
+	} catch (error) {
+		res.json('Was not able to retrieve current registered students.');
+	}
+
+	try {
+		existingTeachers = await Teacher.retrieveRegisteredTeachers();
+	} catch (error) {
+		res.json('Was not able to retrieve current registered teachers.');
+	}
 
 	// c) Compare registering students/teachers to existing students/teacher and add students/teachers if they don't already have accounts.
-	await Teacher.AddStudents(existingStudents, registeringStudents);
-	await Teacher.AddTeachers(existingTeachers, registeringTeachers);
+	try {
+		await Teacher.AddStudents(existingStudents, registeringStudents);
+	} catch (error) {
+		res.json('New students were not able to be added.');
+	}
+
+	try {
+		await Teacher.AddTeachers(existingTeachers, registeringTeachers);
+	} catch (error) {
+		res.json('New teachers were not able to be added.');
+	}
 
 	/**
 	 * PART TWO: Register the students to the specified teachers
 	 */
 
 	// a) Retrieve existing student/teacher data again which could now be updated with new accounts after part 1.
-	let updatedExistingStudents = await Teacher.retrieveRegisteredStudents();
-	let updatedExistingTeachers = await Teacher.retrieveRegisteredTeachers();
+	let updatedExistingStudents;
+	let updatedExistingTeachers;
+
+	try {
+		updatedExistingStudents = await Teacher.retrieveRegisteredStudents();
+	} catch (error) {
+		res.json(
+			'Was not able to retrieve current registered students after being updated in part 1.'
+		);
+	}
+
+	try {
+		updatedExistingTeachers = await Teacher.retrieveRegisteredTeachers();
+	} catch (error) {
+		res.json(
+			'Was not able to retrieve current registered teachers after being updated in part 1.'
+		);
+	}
 
 	// b) Register the registering students to the registering teachers specified.
-	await Teacher.registerStudents(
-		updatedExistingStudents,
-		updatedExistingTeachers,
-		registeringStudents,
-		registeringTeachers
-	);
-
-	res.json('Students were registered successfully!');
+	try {
+		await Teacher.registerStudents(
+			updatedExistingStudents,
+			updatedExistingTeachers,
+			registeringStudents,
+			registeringTeachers
+		);
+		res.json('Students were registered successfully!');
+	} catch (error) {
+		res.json('Registrations failed.');
+	}
 };
 
 // Retrieve all the common students between a given list of teachers.
