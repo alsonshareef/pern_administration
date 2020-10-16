@@ -4,8 +4,6 @@
 
 const Teacher = require('../models/Teacher');
 
-const getOccurence = require('../utils/get_occurence');
-
 // Teacher homepage after login.
 exports.getTeacherHomepage = (req, res, next) => {
 	res.json({
@@ -28,15 +26,19 @@ exports.postRegisterStudent = async (req, res, next) => {
 	let existingTeachers;
 
 	try {
-		existingStudents = await Teacher.retrieveRegisteredStudents();
+		existingStudents = await Teacher.retrieveStudents();
 	} catch (error) {
-		res.json('Was not able to retrieve current registered students.');
+		res.json(
+			'(postRegisterStudent) Was not able to retrieve current students accounts.'
+		);
 	}
 
 	try {
-		existingTeachers = await Teacher.retrieveRegisteredTeachers();
+		existingTeachers = await Teacher.retrieveTeachers();
 	} catch (error) {
-		res.json('Was not able to retrieve current registered teachers.');
+		res.json(
+			'(postRegisterStudent) Was not able to retrieve current teachers accounts.'
+		);
 	}
 
 	// c) Compare registering students/teachers to existing students/teacher and add students/teachers if they don't already have accounts.
@@ -61,7 +63,7 @@ exports.postRegisterStudent = async (req, res, next) => {
 	let updatedExistingTeachers;
 
 	try {
-		updatedExistingStudents = await Teacher.retrieveRegisteredStudents();
+		updatedExistingStudents = await Teacher.retrieveStudents();
 	} catch (error) {
 		res.json(
 			'Was not able to retrieve current registered students after being updated in part 1.'
@@ -69,7 +71,7 @@ exports.postRegisterStudent = async (req, res, next) => {
 	}
 
 	try {
-		updatedExistingTeachers = await Teacher.retrieveRegisteredTeachers();
+		updatedExistingTeachers = await Teacher.retrieveTeachers();
 	} catch (error) {
 		res.json(
 			'Was not able to retrieve current registered teachers after being updated in part 1.'
@@ -92,64 +94,46 @@ exports.postRegisterStudent = async (req, res, next) => {
 
 // Retrieve all the common students between a given list of teachers.
 exports.getCommonStudents = async (req, res, next) => {
+	// a) Retrieve specified teachers from client.
+	const specifiedTeachers =
+		typeof req.query.teachers == 'string'
+			? [req.query.teachers]
+			: req.query.teachers;
+
+	if (specifiedTeachers == undefined) {
+		res.json('Please specify a teacher');
+	}
+
+	// b) Retrieve registration data and current student data for calculating common students.
+	let registrations, students, commonStudents;
+
 	try {
-		const registrations = await pool.query(
-			`SELECT s.id, s.student_first_name, s.student_last_name, s.student_email, t.teacher_first_name, t.teacher_last_name, t.teacher_email
-      FROM students s
-      INNER JOIN registrations r 
-      ON s.id = r.student_id
-      INNER JOIN teachers t 
-      ON t.id = r.teacher_id;`
+		registrations = await Teacher.retrieveRegistrations();
+	} catch (error) {
+		res.json('Not able to retrieve current registration data.');
+	}
+
+	try {
+		students = await Teacher.retrieveStudents();
+	} catch (error) {
+		res.json('Not able to retrieve current student accounts.');
+	}
+
+	// c) Calculate common students.
+	try {
+		commonStudents = await Teacher.retrieveCommonStudents(
+			specifiedTeachers,
+			students,
+			registrations
 		);
+	} catch (error) {
+		res.json('Common student data was not able to be retrieved.');
+	}
 
-		// Total registered students
-		const students = await pool.query('SELECT student_email from students');
-
-		// Specified teachers retrieved from client.
-		const specifiedTeachers =
-			typeof req.query.teachers == 'string'
-				? [req.query.teachers]
-				: req.query.teachers;
-
-		let commonStudentsEmails = [];
-		let registeredStudentsEmails = [];
-
-		if (specifiedTeachers == undefined) {
-			res.json('Please specify a teacher');
-		}
-
-		if (specifiedTeachers.length > 1) {
-			// 1. Gather all students registered for each specified teacher including duplicates.
-			for (const teacher of specifiedTeachers) {
-				for (const reg of registrations.rows) {
-					if (teacher == reg.teacher_email) {
-						registeredStudentsEmails.push(reg.student_email);
-					}
-				}
-			}
-
-			// 2. Store all duplicate student emails as that means they are common between specified teachers.
-			for (const student of students.rows) {
-				if (getOccurence(registeredStudentsEmails, student.student_email) > 1) {
-					commonStudentsEmails.push(student.student_email);
-				}
-			}
-		} else {
-			// If only one teacher is specified, display all students registered under the one specified teacher.
-			for (const reg of registrations.rows) {
-				if (reg.teacher_email == specifiedTeachers[0]) {
-					commonStudentsEmails.push(reg.student_email);
-				}
-			}
-		}
-
-		if (commonStudentsEmails.length !== 0) {
-			res.json({ common_students: commonStudentsEmails });
-		} else {
-			res.json('There are no common students between the specified teachers.');
-		}
-	} catch (err) {
-		console.error(err.message);
+	if (commonStudents.length !== 0) {
+		res.json({ common_students: commonStudents });
+	} else {
+		res.json('There are no common students between the specified teachers.');
 	}
 };
 
