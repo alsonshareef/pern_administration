@@ -7,15 +7,65 @@
 
 const pool = require('../database');
 
+const getOccurence = require('../utils/get_occurence');
+
 class Teacher {
-	static retrieveRegisteredStudents = async () => {
+	static retrieveStudents = async () => {
 		let students = await pool.query('SELECT id, student_email FROM students');
 		return students.rows;
 	};
 
-	static retrieveRegisteredTeachers = async () => {
+	static retrieveTeachers = async () => {
 		let teachers = await pool.query('SELECT id, teacher_email FROM teachers');
 		return teachers.rows;
+	};
+
+	static retrieveRegistrations = async () => {
+		let registrations = await pool.query(
+			`SELECT s.id, s.student_first_name, s.student_last_name, s.student_email, t.teacher_first_name, t.teacher_last_name, t.teacher_email
+      FROM students s
+      INNER JOIN registrations r 
+      ON s.id = r.student_id
+      INNER JOIN teachers t 
+      ON t.id = r.teacher_id;`
+		);
+		return registrations.rows;
+	};
+
+	static retrieveCommonStudents = async (
+		specifiedTeachers,
+		students,
+		registrations
+	) => {
+		let registeredStudentsEmails = [];
+		let commonStudentsEmails = [];
+
+		// 1. If more than one teacher specified, store every student email that is registered to the specified teachers, even if it comes up twice.
+		if (specifiedTeachers.length > 1) {
+			for (const teacher of specifiedTeachers) {
+				for (const reg of registrations) {
+					if (teacher == reg.teacher_email) {
+						registeredStudentsEmails.push(reg.student_email);
+					}
+				}
+			}
+
+			// 2. Filter out every student email that has appeared more than once as that means they are common between specified teachers.
+			for (const student of students) {
+				if (getOccurence(registeredStudentsEmails, student.student_email) > 1) {
+					commonStudentsEmails.push(student.student_email);
+				}
+			}
+		} else {
+			// If only one teacher is specified, display all students registered under the one specified teacher.
+			for (const reg of registrations) {
+				if (reg.teacher_email == specifiedTeachers[0]) {
+					commonStudentsEmails.push(reg.student_email);
+				}
+			}
+		}
+
+		return commonStudentsEmails;
 	};
 
 	static AddStudents = async (existingStudents, registeringStudents) => {
@@ -132,8 +182,6 @@ class Teacher {
 			}
 		}
 	};
-
-	static retrieveRegistrations = async () => {};
 
 	static suspendStudent = async () => {};
 }
