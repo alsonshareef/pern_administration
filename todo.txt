@@ -1,14 +1,22 @@
 ** TODO LIST **
 
-1. [x] Create an endpoint authorized to teachers for registering students that may or may not exist to a specified teacher that may or may not exist.
-  - [x] Retrieve student and teacher data from req.body and check to see if this student and teacher already exists.
-  - [x] If the specified student(s) and teacher don't exist, take the data retrieved from req.body and store them into their tables and continue with next step.
-  - [x] If the specified student(s) and teacher exists, grab their respective ID's from the student and teacher tables and insert ID's into registration table.
-
-2. [x] Create an endpoint authorized to teachers for retrieving a list of students which are registered to a specified list of teachers.
-  - [x] Currently able to retrieve all registration details, but need to be able to filter students dynamically using teacher details retrieved
+1.[x] Create an endpoint authorized to teachers for retrieving a list of students which are registered to a specified list of teachers.
+    [x]Currently able to retrieve all registration details, but need to be able to filter students dynamically using teacher details retrieved
     from req.query.
-  - [x] Instead of retrieving list of ALL students registered between specified teachers, retrieve ONLY common students between list of teachers.
-      > [x] Display all of the students registered for a specified teacher if ONLY ONE teacher is specified.
+    [x] Instead of retrieving list of ALL students registered between specified teachers, retrieve ONLY common students between list of teachers.
+      [x] Display all of the students registered for a specified teacher if ONLY ONE teacher is specified.
 
-3. [] Create an endpoint authorized to teachers for changing a students suspension status.object
+2.[x] Create an endpoint authorized to teachers for registering students that may or may not exist to a specified teacher that may or may not exist.
+    [x] Retrieve student and teacher data from req.body and check to see if this student and teacher already exists.
+    [x] If the specified student(s) and teacher don't exist, take the data retrieved from req.body and store them into their tables and continue with next step.
+    [x] If the specified student(s) and teacher exists, grab their respective ID's from the student and teacher tables and insert ID's into registration table.
+
+3.[] Create an endpoint authorized to teachers for unregistering one or multiple students from one or multiple teachers.
+
+4.[] Create an endpoint authorized to teachers for changing a students suspension status.
+
+5.[] Create an endpoint authorized to teachers for removing student accounts.
+    [] Before the students accounts are removed, they have to be unregistered from all their teachers first.
+
+6.[] Create an endpoint authorized to teachers for removing teacher accounts.
+    [] Before the teachers accounts are removed, they have to have all their students unregistered from them first.
