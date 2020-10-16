@@ -2,9 +2,6 @@
  * TEACHER CONTROLLER METHODS
  */
 
-const pool = require('../database');
-const { registerStudents } = require('../models/Teacher');
-
 const Teacher = require('../models/Teacher');
 
 const getOccurence = require('../utils/get_occurence');
@@ -22,15 +19,15 @@ exports.postRegisterStudent = async (req, res, next) => {
 	 * PART 1: Create accounts for registering students/teachers if they don't already have one.
 	 */
 
-	// Students and Teachers that already have accounts.
-	let existingStudents = await Teacher.retrieveRegisteredStudents();
-	let existingTeachers = await Teacher.retrieveRegisteredTeachers();
-
-	// Store the registering students and teachers that may or may not already have accounts.
+	// a) Store the registering students and teachers that may or may not already have accounts.
 	const registeringStudents = req.body.students;
 	const registeringTeachers = req.body.teachers;
 
-	// Add students/teachers if they don't already have accounts.
+	// b) Retrieve students and Teachers that already have accounts.
+	let existingStudents = await Teacher.retrieveRegisteredStudents();
+	let existingTeachers = await Teacher.retrieveRegisteredTeachers();
+
+	// c) Compare registering students/teachers to existing students/teacher and add students/teachers if they don't already have accounts.
 	await Teacher.AddStudents(existingStudents, registeringStudents);
 	await Teacher.AddTeachers(existingTeachers, registeringTeachers);
 
@@ -38,11 +35,11 @@ exports.postRegisterStudent = async (req, res, next) => {
 	 * PART TWO: Register the students to the specified teachers
 	 */
 
-	// Retrieve updated existing student/teacher data after part 1.
+	// a) Retrieve existing student/teacher data again which could now be updated with new accounts after part 1.
 	let updatedExistingStudents = await Teacher.retrieveRegisteredStudents();
 	let updatedExistingTeachers = await Teacher.retrieveRegisteredTeachers();
 
-	// Register the registering students to the registering teachers specified.
+	// b) Register the registering students to the registering teachers specified.
 	await Teacher.registerStudents(
 		updatedExistingStudents,
 		updatedExistingTeachers,
