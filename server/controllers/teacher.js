@@ -4,15 +4,23 @@
 
 const Teacher = require('../models/Teacher');
 
-// Teacher homepage after login.
+/*
+	@desc			Retrieves the homepage of logged in teacher.
+	@route		GET /api/v1/teacher
+	@access		Public
+*/
 exports.getTeacherHomepage = (req, res, next) => {
 	res.json({
 		message: 'Teachers homepage.',
 	});
 };
 
-// Register a student or multiple students to specified teachers.
-exports.postRegisterStudent = async (req, res, next) => {
+/*
+	@desc			Register a student or multiple students to specified teachers.
+	@route		POST /api/v1/teacher/register
+	@access		Public
+*/
+exports.registerStudents = async (req, res, next) => {
 	/**
 	 * PART 1: Create accounts for registering students/teachers if they don't already have one.
 	 */
@@ -92,7 +100,18 @@ exports.postRegisterStudent = async (req, res, next) => {
 	}
 };
 
-// Retrieve all the common students between a given list of teachers.
+/*
+	@desc			Unregister one or more students from specified teachers.
+	@route		DELETE/api/v1/teacher/unregister
+	@access		Public
+*/
+exports.unregisterStudents = (req, res, next) => {};
+
+/*
+	@desc			Retrieve all the common students between a given list of teachers.
+	@route		GET /api/v1/teacher/commonstudents
+	@access		Public
+*/
 exports.getCommonStudents = async (req, res, next) => {
 	// a) Retrieve specified teachers from client.
 	const specifiedTeachers =
@@ -102,43 +121,44 @@ exports.getCommonStudents = async (req, res, next) => {
 
 	if (specifiedTeachers == undefined) {
 		res.json('Please specify a teacher');
-	}
-
-	// b) Retrieve registration data and current student data for calculating common students.
-	let registrations, students, commonStudents;
-
-	try {
-		registrations = await Teacher.retrieveRegistrations();
-	} catch (error) {
-		res.json('Not able to retrieve current registration data.');
-	}
-
-	try {
-		students = await Teacher.retrieveStudents();
-	} catch (error) {
-		res.json('Not able to retrieve current student accounts.');
-	}
-
-	// c) Calculate common students.
-	try {
-		commonStudents = await Teacher.retrieveCommonStudents(
-			specifiedTeachers,
-			students,
-			registrations
-		);
-	} catch (error) {
-		res.json('Common student data was not able to be retrieved.');
-	}
-
-	if (commonStudents.length !== 0) {
-		res.json({ common_students: commonStudents });
 	} else {
-		res.json('There are no common students between the specified teachers.');
+		// b) Retrieve registration data and current student data for calculating common students.
+		let registrations, students, commonStudents;
+
+		try {
+			registrations = await Teacher.retrieveRegistrations();
+		} catch (error) {
+			res.json('Not able to retrieve current registration data.');
+		}
+
+		try {
+			students = await Teacher.retrieveStudents();
+		} catch (error) {
+			res.json('Not able to retrieve current student accounts.');
+		}
+
+		// c) Calculate common students.
+		try {
+			commonStudents = await Teacher.retrieveCommonStudents(
+				specifiedTeachers,
+				students,
+				registrations
+			);
+		} catch (error) {
+			res.json('Common student data was not able to be retrieved.');
+		}
+
+		if (commonStudents.length !== 0) {
+			res.json({ common_students: commonStudents });
+		} else {
+			res.json('There are no common students between the specified teachers.');
+		}
 	}
 };
 
-// Suspend a student.
-exports.postSuspendStudent = (req, res, next) => {};
-
-// Unregister one or more students from specified teachers.
-exports.unregisterStudents = (req, res, next) => {};
+/*
+	@desc			Suspend a student.
+	@route		UPDATE /api/v1/teacher/suspendstudent
+	@access		Public
+*/
+exports.suspendStudents = (req, res, next) => {};
