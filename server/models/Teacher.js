@@ -166,15 +166,15 @@ class Teacher {
 
 	static unregisterStudents = async () => {};
 
-	static retrieveCommonStudents = async (
-		specifiedTeachers,
-		students,
-		registrations
-	) => {
+	static retrieveCommonStudents = async (specifiedTeachers) => {
+		// 1. Retrieve existing student/registration data.
+		const existingStudents = await this.retrieveStudents();
+		const registrations = await this.retrieveRegistrations();
+
+		// 2. If more than one teacher specified, store every student email that is registered to the specified teachers, even if it comes up twice.
 		let registeredStudentsEmails = [];
 		let commonStudentsEmails = [];
 
-		// 1. If more than one teacher specified, store every student email that is registered to the specified teachers, even if it comes up twice.
 		if (specifiedTeachers.length > 1) {
 			for (const teacher of specifiedTeachers) {
 				for (const reg of registrations) {
@@ -185,7 +185,7 @@ class Teacher {
 			}
 
 			// 2. Filter out every student email that has appeared more than once as that means they are common between specified teachers.
-			for (const student of students) {
+			for (const student of existingStudents) {
 				if (getOccurence(registeredStudentsEmails, student.student_email) > 1) {
 					commonStudentsEmails.push(student.student_email);
 				}

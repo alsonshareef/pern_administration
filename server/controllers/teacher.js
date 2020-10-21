@@ -73,28 +73,11 @@ exports.getCommonStudents = async (req, res, next) => {
 	if (specifiedTeachers == undefined) {
 		res.json('Please specify a teacher');
 	} else {
-		// b) Retrieve registration data and current student data for calculating common students.
-		let registrations, students, commonStudents;
-
-		try {
-			registrations = await Teacher.retrieveRegistrations();
-		} catch (error) {
-			res.json('Not able to retrieve current registration data.');
-		}
-
-		try {
-			students = await Teacher.retrieveStudents();
-		} catch (error) {
-			res.json('Not able to retrieve current student accounts.');
-		}
-
 		// c) Calculate common students.
+		let commonStudents;
+
 		try {
-			commonStudents = await Teacher.retrieveCommonStudents(
-				specifiedTeachers,
-				students,
-				registrations
-			);
+			commonStudents = await Teacher.retrieveCommonStudents(specifiedTeachers);
 		} catch (error) {
 			res.json('Common student data was not able to be retrieved.');
 		}
@@ -102,7 +85,9 @@ exports.getCommonStudents = async (req, res, next) => {
 		if (commonStudents.length !== 0) {
 			res.status(200).json({ common_students: commonStudents });
 		} else {
-			res.json('There are no common students between the specified teachers.');
+			res
+				.status(500)
+				.json('There are no common students between the specified teachers.');
 		}
 	}
 };
