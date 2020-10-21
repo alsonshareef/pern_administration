@@ -9,7 +9,7 @@ const Teacher = require('../models/Teacher');
 	@route		GET /api/v1/teacher
 	@access		Public
 */
-exports.getTeacherHomepage = (req, res, next) => {
+exports.getTeacherHomepage = async (req, res, next) => {
 	res.json({
 		message: 'Teachers homepage.',
 	});
@@ -21,82 +21,31 @@ exports.getTeacherHomepage = (req, res, next) => {
 	@access		Public
 */
 exports.registerStudents = async (req, res, next) => {
-	/**
-	 * PART 1: Create accounts for registering students/teachers if they don't already have one.
-	 */
-
 	// a) Store the registering students and teachers that may or may not already have accounts.
 	const registeringStudents = req.body.students;
 	const registeringTeachers = req.body.teachers;
 
-	// b) Retrieve students and Teachers that already have accounts.
-	let existingStudents;
-	let existingTeachers;
-
+	// b) Compare registering students/teachers to existing students/teacher and add students/teachers if they don't already have accounts.
 	try {
-		existingStudents = await Teacher.retrieveStudents();
+		await Teacher.AddStudents(registeringStudents);
 	} catch (error) {
-		res.json(
-			'(postRegisterStudent) Was not able to retrieve current students accounts.'
-		);
+		res.status(500).json('New students were not able to be added.');
 	}
 
 	try {
-		existingTeachers = await Teacher.retrieveTeachers();
+		await Teacher.AddTeachers(registeringTeachers);
 	} catch (error) {
-		res.json(
-			'(postRegisterStudent) Was not able to retrieve current teachers accounts.'
-		);
+		res.status(500).json('New teachers were not able to be added.');
 	}
 
-	// c) Compare registering students/teachers to existing students/teacher and add students/teachers if they don't already have accounts.
+	// c) Register the registering students to the registering teachers specified.
 	try {
-		await Teacher.AddStudents(existingStudents, registeringStudents);
+		await Teacher.registerStudents(registeringStudents, registeringTeachers);
+		res.status(200).json({
+			message: 'Students were registered successfully!',
+		});
 	} catch (error) {
-		res.json('New students were not able to be added.');
-	}
-
-	try {
-		await Teacher.AddTeachers(existingTeachers, registeringTeachers);
-	} catch (error) {
-		res.json('New teachers were not able to be added.');
-	}
-
-	/**
-	 * PART TWO: Register the students to the specified teachers
-	 */
-
-	// a) Retrieve existing student/teacher data again which could now be updated with new accounts after part 1.
-	let updatedExistingStudents;
-	let updatedExistingTeachers;
-
-	try {
-		updatedExistingStudents = await Teacher.retrieveStudents();
-	} catch (error) {
-		res.json(
-			'Was not able to retrieve current registered students after being updated in part 1.'
-		);
-	}
-
-	try {
-		updatedExistingTeachers = await Teacher.retrieveTeachers();
-	} catch (error) {
-		res.json(
-			'Was not able to retrieve current registered teachers after being updated in part 1.'
-		);
-	}
-
-	// b) Register the registering students to the registering teachers specified.
-	try {
-		await Teacher.registerStudents(
-			updatedExistingStudents,
-			updatedExistingTeachers,
-			registeringStudents,
-			registeringTeachers
-		);
-		res.json('Students were registered successfully!');
-	} catch (error) {
-		res.json('Registrations failed.');
+		res.status(500).json('Registrations failed.');
 	}
 };
 
@@ -105,7 +54,9 @@ exports.registerStudents = async (req, res, next) => {
 	@route		DELETE/api/v1/teacher/unregister
 	@access		Public
 */
-exports.unregisterStudents = (req, res, next) => {};
+exports.unregisterStudents = (req, res, next) => {
+	res.json('DELETE unregister student.');
+};
 
 /*
 	@desc			Retrieve all the common students between a given list of teachers.
@@ -149,7 +100,7 @@ exports.getCommonStudents = async (req, res, next) => {
 		}
 
 		if (commonStudents.length !== 0) {
-			res.json({ common_students: commonStudents });
+			res.status(200).json({ common_students: commonStudents });
 		} else {
 			res.json('There are no common students between the specified teachers.');
 		}
@@ -161,4 +112,6 @@ exports.getCommonStudents = async (req, res, next) => {
 	@route		UPDATE /api/v1/teacher/suspendstudent
 	@access		Public
 */
-exports.suspendStudents = (req, res, next) => {};
+exports.suspendStudents = (req, res, next) => {
+	res.status(200).json('UPDATE suspend student.');
+};
