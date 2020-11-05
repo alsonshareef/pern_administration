@@ -1,25 +1,29 @@
 {
-  "name": "server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server/server",
-    "server": "nodemon server/server"
-  },
-  "keywords": [],
-  "author": "Alson Shareef",
-  "license": "ISC",
-  "dependencies": {
-    "colors": "^1.4.0",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "express-jwt": "^6.0.0",
-    "jsonwebtoken": "^8.5.1",
-    "pg": "^8.3.0"
-  },
-  "devDependencies": {
-    "concurrently": "^5.2.0",
-    "nodemon": "^2.0.4"
-  }
+	"name": "server",
+	"version": "1.0.0",
+	"description": "",
+	"main": "server.js",
+	"scripts": {
+		"start": "node server/server",
+		"server": "nodemon server/server",
+		"test": "mocha ./server/tests/teacher.js --exit"
+	},
+	"keywords": [],
+	"author": "Alson Shareef",
+	"license": "ISC",
+	"dependencies": {
+		"colors": "^1.4.0",
+		"dotenv": "^8.2.0",
+		"express": "^4.17.1",
+		"express-jwt": "^6.0.0",
+		"jsonwebtoken": "^8.5.1",
+		"pg": "^8.3.0"
+	},
+	"devDependencies": {
+		"chai": "^4.2.0",
+		"chai-http": "^4.3.0",
+		"concurrently": "^5.2.0",
+		"mocha": "^8.2.1",
+		"nodemon": "^2.0.4"
+	}
 }
