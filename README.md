@@ -2,18 +2,33 @@
 
 ## About
 
-This is a fullstack web-application that provides a solution for teachers to carry out administration tasks for their students.
+The solution this web application provides is a simple way for teachers to carry out their administrative tasks in regards to the students that have been registered to them for classes, as well as for students to keep track of the teachers they are enrolled to.
+
+Teachers will be able to carry out tasks such as:
+  - Create an account to then view a list of students who have created accounts on the application as well that are available to be registered to teachers.
+  - Register a specified list of students that have existing accounts to themselves or another teacher.
+  - Unregister a specified list of students regardless of whether they are registered to themselves or other teachers.
+  - Retrieve a list of registered students that are common between a specified list of teachers.
+  - Suspend a specified list of students which will stop them from being able to receive messages from teachers, but they will remain registered to their respective teachers unless a teacher decides they should be unregistered completely. 
+  - Send messages to students that have to satisfy the following:
+    - are <b>NOT</b> suspended.
+    - are either registered to them <b>OR</b> have been @mentioned.  
+
+Students will be able to do the following:
+  - Create an account which they will be able to log into and see which teachers they have been registered to.
+  - View whether they have been either suspended or unregistered from one or multiple teachers.
+  - View messages that they have received from teachers they are registered to or by teachers who have @mentioned them.
+  - Delete their account which will unregister them from all respective teachers.
+  
 
 ## Motivation
 
 The purpose behind creating this project is to show an understanding of the following:
 
 - Setting up a relational database to fulfill CRUD operations as well as to show knowledge of writing SQL queries.
-
 - How to create a RESTful API using Node and Express which can run logic based on user interaction to satisfy their administrative needs.
-
+- How to utilize Authentication and Authorization to expose different types of users to different functionality.
 - How to utilise a design pattern such as MVC to add structure and modularity to the backend code to leave it easier to maintain.
-
 - How to create a user-friendly UI using React.
 
 ## Screenshots
