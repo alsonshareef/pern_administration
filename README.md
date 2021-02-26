@@ -4,7 +4,7 @@
 
 The solution this web application provides is a simple way for teachers to carry out their administrative tasks in regards to the students that have been registered to them for classes, as well as for students to keep track of the teachers they are enrolled to.
 
-Teachers will be able to carry out tasks such as:
+&#8594; Teachers will be able to carry out tasks such as:
   - Create an account to then view a list of students who have created accounts on the application as well that are available to be registered to teachers.
   - Register a specified list of students that have existing accounts to themselves or another teacher.
   - Unregister a specified list of students regardless of whether they are registered to themselves or other teachers.
@@ -14,7 +14,7 @@ Teachers will be able to carry out tasks such as:
     - are <b>NOT</b> suspended.
     - are either registered to them <b>OR</b> have been @mentioned.  
 
-Students will be able to do the following:
+&#8594; Students will be able to do the following:
   - Create an account which they will be able to log into and see which teachers they have been registered to.
   - View whether they have been either suspended or unregistered from one or multiple teachers.
   - View messages that they have received from teachers they are registered to or by teachers who have @mentioned them.
